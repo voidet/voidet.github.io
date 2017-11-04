@@ -14,7 +14,15 @@
 					
 				
 				
-					<description>&lt;p&gt;Value and references types are different ways in which data gets handled as it flows through your application. They both have implications on perfomance &amp;amp; architecture. Both introduce complexities of which mishandled can introduce some unexpected behaviours in your applications performance, meaning, bugs.&lt;/p&gt;
+					<description>&lt;p&gt;Value and references types are different ways in which data gets handled as it flows through your application. They both have implications on perfomance &amp;amp; architecture. Both introduce complexities of which mishandled can introduce some unexpected behaviours in your applications performance, aka bugs.&lt;/p&gt;
+
+&lt;p&gt;We’ll compare both value and reference types below using the analogy of a garden gnome, named &lt;em&gt;Phil&lt;/em&gt;. The finally we’ll discuss where you would want to use value vs reference types in your programming.&lt;/p&gt;
+
+&lt;h2 id=&quot;reference-types&quot;&gt;Reference types&lt;/h2&gt;
+
+&lt;h2 id=&quot;value-types&quot;&gt;Value types&lt;/h2&gt;
+
+&lt;p&gt;Next we’ll look at value types. Value types are all about&lt;/p&gt;
 </description>
 				
 				<pubDate>Sat, 04 Nov 2017 00:00:00 -0700</pubDate>
@@ -187,7 +195,7 @@
 
 &lt;h3 id=&quot;rfp&quot;&gt;RFP&lt;/h3&gt;
 
-&lt;p&gt;When RFP is thrown into the mix, MVVM comes into its own. The ability for a view to react to the change of a properties state automatically is powerful. RFP comes with its own challenges though, and for that I don’t use it on the iOS platform (debugging is/was hell). Binding VM property state to properties on views allows direct mapping of state to view side effects. Its powerful, but with great power, comes great debugging. Be warned, you can go overboard with signals and RFP.&lt;/p&gt;
+&lt;p&gt;When RFP is thrown into the mix, MVVM comes into its own. The ability for a view to react to the change of a properties state automatically is powerful. RFP comes with its own challenges though, and for that I don’t use it on the iOS platform (debugging is/was hell). Binding VM property state to properties on views allows direct mapping of state to view side effects. It’s powerful, but with great power, comes great debugging. Be warned, you can go overboard with signals and RFP.&lt;/p&gt;
 
 &lt;h3 id=&quot;maintainability&quot;&gt;Maintainability&lt;/h3&gt;
 
