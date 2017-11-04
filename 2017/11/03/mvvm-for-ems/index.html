@@ -226,7 +226,7 @@ header::after {
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>You can see that we get passed in a view model from whoever instantiated the view controller. This is useful to pass in data that the screen requires that the previous screen may of had and needs to pass along. We also setup our view and add it on screen when the view hierarchy is finished loading.</p>
+<p>You can see that we get passed in a view model from whoever instantiated (created) the view controller. This is useful to pass in data that the screen requires that the previous screen may of had and needs to pass along. We also setup our view and add it on screen when the view hierarchy is finished loading.</p>
 
 <p>Next we fetch some tripPrices, if it succeeded then we will call updateView(). Which simply looks at the viewModel’s contents back in the ViewModel. If you look back at fetchResults when we get results we set them back on the tripPrice property with a new TripPrice object. We then call back up to the completion block to let the <strong>View/ViewController</strong> (presentation layer) know it’s time to redraw the view.</p>
 

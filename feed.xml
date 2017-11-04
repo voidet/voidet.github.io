@@ -14,7 +14,7 @@
 					
 				
 				
-					<description>&lt;p&gt;Value and references types are different ways in&lt;/p&gt;
+					<description>&lt;p&gt;Value and references types are different ways in which data gets handled as it flows through your application. They both have implications on perfomance &amp;amp; architecture. Both introduce complexities of which mishandled can introduce some unexpected behaviours in your applications performance, meaning, bugs.&lt;/p&gt;
 </description>
 				
 				<pubDate>Sat, 04 Nov 2017 00:00:00 -0700</pubDate>
@@ -159,7 +159,7 @@
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;You can see that we get passed in a view model from whoever instantiated the view controller. This is useful to pass in data that the screen requires that the previous screen may of had and needs to pass along. We also setup our view and add it on screen when the view hierarchy is finished loading.&lt;/p&gt;
+&lt;p&gt;You can see that we get passed in a view model from whoever instantiated (created) the view controller. This is useful to pass in data that the screen requires that the previous screen may of had and needs to pass along. We also setup our view and add it on screen when the view hierarchy is finished loading.&lt;/p&gt;
 
 &lt;p&gt;Next we fetch some tripPrices, if it succeeded then we will call updateView(). Which simply looks at the viewModel’s contents back in the ViewModel. If you look back at fetchResults when we get results we set them back on the tripPrice property with a new TripPrice object. We then call back up to the completion block to let the &lt;strong&gt;View/ViewController&lt;/strong&gt; (presentation layer) know it’s time to redraw the view.&lt;/p&gt;
 
