@@ -7,6 +7,22 @@
 		<atom:link href="http://manageering.us/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Value &amp; Reference Types</title>
+				
+					
+						<dc:creator>RS</dc:creator>
+					
+				
+				
+					<description>
+</description>
+				
+				<pubDate>Sat, 04 Nov 2017 00:00:00 -0700</pubDate>
+				<link>http://manageering.us/2017/11/04/value-and-reference-types/</link>
+				<guid isPermaLink="true">http://manageering.us/2017/11/04/value-and-reference-types/</guid>
+			</item>
+		
+			<item>
 				<title>MVVM for EMs</title>
 				
 					
@@ -19,6 +35,9 @@
 &lt;h2 id=&quot;model&quot;&gt;Model&lt;/h2&gt;
 
 &lt;p&gt;This is the first &lt;strong&gt;M&lt;/strong&gt; of &lt;strong&gt;MVVM&lt;/strong&gt;. The model’s sole task, and it is a basic one, is simply to store data. There is no logic in the model, no network calls. Simply a bunch of properties and potentially some handling of data to get these properties filled. For instance you may place some JSON parsing in the model object, but no transformation will be done outside the realm of mapping.&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;totalPrice&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;30.99&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;currencySymbol&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;$&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;currencyCode&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;USD&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;view&quot;&gt;View&lt;/h2&gt;
 

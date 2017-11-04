@@ -103,6 +103,9 @@ header::after {
 
 <p>This is the first <strong>M</strong> of <strong>MVVM</strong>. The model’s sole task, and it is a basic one, is simply to store data. There is no logic in the model, no network calls. Simply a bunch of properties and potentially some handling of data to get these properties filled. For instance you may place some JSON parsing in the model object, but no transformation will be done outside the realm of mapping.</p>
 
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w"> </span><span class="s2">"totalPrice"</span><span class="p">:</span><span class="w"> </span><span class="mf">30.99</span><span class="p">,</span><span class="w"> </span><span class="s2">"currencySymbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$"</span><span class="p">,</span><span class="w"> </span><span class="s2">"currencyCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
 <h2 id="view">View</h2>
 
 <p>The next component is the view, the next <strong>V</strong> in the <strong>MVVM</strong> acronym. This is simple. It’s the stuff you see on screen, or whatever the client will consume. In the case of of a mobile app, the view may be a button, a label, or even an entire login screen. For an API the <strong>V</strong> may be the JSON that gets sent out to the client.</p>
