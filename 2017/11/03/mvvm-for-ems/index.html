@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+	<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>
+
+MVVM for EMs • manageering.
+
+</title>
+<meta name="description" content="It's a design pattern that has gained a lot of popularity in the past years. Your team is probably using it and you might not know what it is. An Engineering Manager in San Francisco. Has Thoughts. Has typed these thoughts">
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed.xml">
+
+<!-- icons -->
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+
+<meta name="theme-color" content="#FF3D7F">
+<meta name="msapplication-TileColor" content="#00f0ff">
+<meta name="msapplication-TileImage" content="/mstile-310x310.png">
+<!-- /icons -->
+
+<!-- og tags -->
+<meta property="og:site_name" content="manageering.">
+<meta property="og:title" content="MVVM for EMs • manageering.">
+<meta property="og:locale" content="en">
+
+  
+    <meta property="og:image" content="http://manageering.us/img/og-image.jpg">
+  
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://manageering.us/2017/11/03/mvvm-for-ems/">
+<meta property="og:description" content="
+
+It's a design pattern that has gained a lot of popularity in the past years. Your team is probably using it and you might not know what it is.
+">
+<!-- /og tags -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="/js/modernizr.js"></script>
+<script src="/js/fitvids.js"></script>
+<link href='//fonts.googleapis.com/css?family=Source+Code+Pro:400,700|Source+Sans+Pro:600,900|Crimson+Text:700italic,600,600italic,400,700,400italic' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="/css/reset.css">
+<link rel="stylesheet" href="/css/pygments.css">
+
+<link rel="stylesheet" href="/css/style.css">
+<!--[if gte IE 9]>
+  <style type="text/css">
+    .gradient {
+       filter: none;
+    }
+  </style>
+<![endif]-->
+
+
+<style>
+header {
+  margin-bottom: 40px;
+}
+@media all and (min-width: 500px) {
+  header {
+    margin-bottom: 100px;
+  }
+}
+header::after {
+  display: none;
+}
+</style>
+
+
+</head>
+<body>
+	
+	<div class="wrap">
+		<header>
+  <a href="/" class="website-title">
+    
+      manageering.
+    
+
+  </a>
+  <nav>
+  <a href="/about/">About</a>
+  <a href="/archive/">Archive</a>
+  <a href="/contact/">Contact</a>
+</nav>
+
+  
+</header>
+
+		
+
+
+<article class="post">
+  <span class="meta">Nov 3, 2017 • 6&nbsp;min read</span>
+	<h1>MVVM for EMs</h1>
+		<p>Firstly let’s get the acronym out of the way. MVVM stands for model, view, view-model. It has a nice symmetry, but there are three components here and they all have separate responsibilities. The main purpose of MVVM is to keep business logic in a single place; the view model. All dependencies that are required to show something on the screen, to calculate something, all fall under the jurisdiction of the view-model. Let’s take a look at the responsibilities of each of the three components.</p>
+
+<h2 id="model">Model</h2>
+
+<p>This is the first <strong>M</strong> of <strong>MVVM</strong>. The model’s sole task, and it is a basic one, is simply to store data. There is no logic in the model, no network calls. Simply a bunch of properties and potentially some handling of data to get these properties filled. For instance you may place some JSON parsing in the model object, but no transformation will be done outside the realm of mapping.</p>
+
+<h2 id="view">View</h2>
+
+<p>The next component is the view, the next <strong>V</strong> in the <strong>MVVM</strong> acronym. This is simple. It’s the stuff you see on screen, or whatever the client will consume. In the case of of a mobile app, the view may be a button, a label, or even an entire login screen. For an API the <strong>V</strong> may be the JSON that gets sent out to the client.</p>
+
+<p>There is no logic in the view. The view simply read values, or, in some cases, reacts to values, that get passed in. By the:</p>
+
+<h2 id="view-model">View model</h2>
+
+<p>I left this for last, but it is the <strong>VM</strong> in <strong>MVVM</strong>. This is where the meat and bones are. This is where all the logic, all the handling, all the updates, all the treatment gets done. The view model is the middleman between the view and the model. It’s job is to take ownership of all the business logic, view logic, server call logic. A view model takes in model objects, or other view models, and composes it self in a way that will set it self up to give a view what it needs. It will hand the view direct, hopefully, flat mapped properties for the view to read.</p>
+
+<p>So what does it look like?</p>
+
+<p><img src="/assets/mvvm.png" alt="mvvm" /></p>
+
+<h2 id="real-world-example">Real world example</h2>
+
+<p>Let’s take a real world example. Let’s say we want to present the user a total price for their holiday. This will involve:</p>
+
+<ol>
+  <li>A network call</li>
+  <li>A place to store the total cost amount</li>
+  <li>Some beautification of the total cost amount</li>
+  <li>A view to present the user the total amount</li>
+</ol>
+
+<p>We’ll now break it down using some swift to showcase how this all looks then talk about the lifecycle.</p>
+
+<h3 id="the-model">The model</h3>
+
+<p>You ignore the init method. This is just an example that parsing concerns and mapping concerns can lay with the model object. This is not a view concern, logic or formatting outside of marshalling data presented from the server into the model object. Really, if you’re doing your API layer correctly for a client &lt;-&gt; server relationship, this really should be flatmapped and one to one easily parsed.</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">struct</span> <span class="kt">TripPrice</span> <span class="p">{</span>
+  
+  <span class="k">let</span> <span class="nv">price</span><span class="p">:</span> <span class="kt">Double</span>
+  
+  <span class="nf">init</span><span class="p">?(</span><span class="nv">jsonResult</span><span class="p">:</span><span class="kt">Any</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">guard</span> <span class="k">let</span> <span class="nv">result</span> <span class="o">=</span> <span class="n">jsonResult</span> <span class="k">as?</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Double</span><span class="p">],</span>
+    <span class="k">let</span> <span class="nv">price</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s">"totalPrice"</span><span class="p">]</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">nil</span>
+    <span class="p">}</span>
+    <span class="k">self</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">price</span>
+  <span class="p">}</span>
+  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="the-view">The view</h3>
+
+<p>Here you can see we need to initialize our PriceLabel object with a <strong>TripePriceViewModel</strong>. When we do we call the internal method of updateView, which will read the property totalPriceText and set it on the text. Long story short, make a new label and give it a view model, it will automatically update that label’s text with the totalPriceText from that view model.</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">PriceLabel</span> <span class="p">:</span> <span class="kt">UILabel</span> <span class="p">{</span>
+  
+  <span class="k">var</span> <span class="nv">viewModel</span><span class="p">:</span> <span class="kt">TripPriceViewModel</span> <span class="p">{</span>
+    <span class="k">didSet</span> <span class="p">{</span>
+      <span class="nf">updateView</span><span class="p">()</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  
+  <span class="nf">init</span><span class="p">(</span><span class="nv">viewModel</span><span class="p">:</span> <span class="kt">TripPriceViewModel</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">self</span><span class="o">.</span><span class="n">viewModel</span> <span class="o">=</span> <span class="n">viewModel</span>
+    <span class="k">super</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">frame</span><span class="p">:</span> <span class="kt">CGRect</span><span class="o">.</span><span class="n">zero</span><span class="p">)</span>
+    <span class="nf">updateView</span><span class="p">()</span>
+  <span class="p">}</span>
+  
+  <span class="kd">required</span> <span class="kd">public</span> <span class="nf">init</span><span class="p">?(</span><span class="n">coder</span> <span class="nv">aDecoder</span><span class="p">:</span> <span class="kt">NSCoder</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">fatalError</span><span class="p">(</span><span class="s">"Unimplemented init with coder"</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="kd">private</span> <span class="kd">func</span> <span class="nf">updateView</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">viewModel</span><span class="o">.</span><span class="n">totalPriceText</span>
+  <span class="p">}</span>
+  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The main thing to pay attention to here is the setting of the viewModel, and the <em>updateView</em> method and what that does.</p>
+
+<h3 id="the-view-model">The view model</h3>
+
+<p>The view model now does all the logic for us</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">TripPriceViewModel</span> <span class="p">{</span>
+	
+  <span class="kd">private</span> <span class="k">var</span> <span class="nv">tripPrice</span><span class="p">:</span> <span class="kt">TripPrice</span><span class="p">?</span>
+  <span class="k">var</span> <span class="nv">totalPriceText</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span>
+    <span class="k">guard</span> <span class="k">let</span> <span class="nv">price</span> <span class="o">=</span> <span class="n">tripPrice</span><span class="p">?</span><span class="o">.</span><span class="n">price</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="s">"Fetching total price"</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="s">"The total trip price is </span><span class="se">\(</span><span class="n">tripPriceText</span><span class="se">)</span><span class="s"> </span><span class="se">\(</span><span class="n">price</span><span class="se">)</span><span class="s">"</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">fetchResults</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//Fetch some JSON and return it</span>
+    <span class="k">self</span><span class="o">.</span><span class="n">tripPrice</span> <span class="o">=</span> <span class="kt">TripPrice</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
+    <span class="nf">completion</span><span class="p">()</span>
+  <span class="p">}</span>
+	
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="stitching-it-all-together">Stitching it all together</h3>
+
+<p>So what does this all mean? Let’s talk about how this all would play in together. Part of our view layer would also be a View Controller. A view controller is quite standard and you would be familiar with it in the MVC world. It’s part of the view lifecycle for a Mobile App, a presenter, a VC.</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">TripPriceViewController</span> <span class="p">:</span> <span class="kt">UIViewController</span> <span class="p">{</span>
+  
+  <span class="k">let</span> <span class="nv">tripPriceViewModel</span><span class="p">:</span> <span class="kt">TripPriceViewModel</span>
+  <span class="k">var</span> <span class="nv">totalPriceLabel</span><span class="p">:</span> <span class="kt">PriceLabel</span>
+  
+  <span class="nf">init</span><span class="p">(</span><span class="nv">vm</span><span class="p">:</span> <span class="kt">TripPriceViewModel</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">self</span><span class="o">.</span><span class="n">tripPriceViewModel</span> <span class="o">=</span> <span class="n">vm</span>
+    <span class="k">self</span><span class="o">.</span><span class="n">totalPriceLabel</span> <span class="o">=</span> <span class="kt">PriceLabel</span><span class="p">(</span><span class="nv">viewModel</span><span class="p">:</span> <span class="n">vm</span><span class="p">)</span>
+    <span class="k">super</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">nibName</span><span class="p">:</span><span class="kc">nil</span><span class="p">,</span> <span class="nv">bundle</span><span class="p">:</span><span class="kc">nil</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="kd">required</span> <span class="kd">public</span> <span class="nf">init</span><span class="p">?(</span><span class="n">coder</span> <span class="nv">aDecoder</span><span class="p">:</span> <span class="kt">NSCoder</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">fatalError</span><span class="p">(</span><span class="s">"Unimplemented init with coder"</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">super</span><span class="o">.</span><span class="nf">viewDidLoad</span><span class="p">()</span>
+    <span class="k">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="nf">addSubview</span><span class="p">(</span><span class="n">totalPriceLabel</span><span class="p">)</span>
+  
+    <span class="n">tripPriceViewModel</span><span class="o">.</span><span class="n">fetchResults</span> <span class="p">{</span>
+      <span class="k">self</span><span class="o">.</span><span class="n">totalPriceLabel</span><span class="o">.</span><span class="n">viewModel</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="n">tripPriceViewModel</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+  
+    
+      
+        <small><em>Post by: RS </em></small>
+      
+    
+  
+</article>
+
+
+
+
+
+	  <script>
+	    $("article").fitVids();
+	    $('article:not(.page) p').each(function(i){
+				if (($(this).find('img').length) && (!$.trim($(this).text()).length))  {
+					$(this).addClass('img-only');
+				}
+				if ($.trim($(this).text()).length - $.trim($(this).find('small').text()).length == 0 && ($(this).find('img').length)){
+					$(this).addClass('img-only-source');
+				}
+	  	});
+	  </script>
+	</div>
+	<footer>
+  <div class="inner">
+    <p>Theme crafted by <a href="http://steinvc.github.io/holo-alfa/">Stijn</a><br />
+    <b>Running:</b> Level 2 • nxt lvl
+1km • 52% into level.<br /><b>Cycling:</b> Level 2 • nxt lvl
+255km • 27% into level</p>
+  </div>
+</footer>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-107118240-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>
