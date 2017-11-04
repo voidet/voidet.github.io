@@ -168,7 +168,7 @@ blockquote::after {
   font-style: normal;
 }
 code {
-  font-family: "Source Code Pro", monospace;
+  font-family: "Bitstream Vera Sans Mono", "Consolas", "Monaco";
 }
 p code {
   font-size: .7em;
