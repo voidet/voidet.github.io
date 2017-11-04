@@ -20,6 +20,8 @@
 
 &lt;h2 id=&quot;reference-types&quot;&gt;Reference types&lt;/h2&gt;
 
+&lt;p&gt;Reference types are all about manipulating the original object. A reference can be thought of as an address; that being an address in memory. For our example &lt;em&gt;Phil&lt;/em&gt; the garden gnome. Phil has an address, a street address. If we want to talk about Phil, we reference him by his street address. I’m talking about &lt;em&gt;Phil&lt;/em&gt; at “789 Main Street, North Pole”.&lt;/p&gt;
+
 &lt;h2 id=&quot;value-types&quot;&gt;Value types&lt;/h2&gt;
 
 &lt;p&gt;Next we’ll look at value types. Value types are all about&lt;/p&gt;
