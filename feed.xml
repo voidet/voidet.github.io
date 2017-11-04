@@ -14,7 +14,7 @@
 					
 				
 				
-					<description>&lt;p&gt;Value and references types are two&lt;/p&gt;
+					<description>&lt;p&gt;Value and references types are different ways in&lt;/p&gt;
 </description>
 				
 				<pubDate>Sat, 04 Nov 2017 00:00:00 -0700</pubDate>
@@ -87,7 +87,7 @@
 
 &lt;h3 id=&quot;the-view&quot;&gt;The view&lt;/h3&gt;
 
-&lt;p&gt;Here you can see we need to initialize our PriceLabel object with a &lt;strong&gt;TripePriceViewModel&lt;/strong&gt;. When we do we call the internal method of updateView, which will read the property totalPriceText and set it on the text. Long story short, make a new label and give it a view model, it will automatically update that label’s text with the totalPriceText from that view model.&lt;/p&gt;
+&lt;p&gt;Here you can see we need to initialize our PriceLabel object with a &lt;strong&gt;TripPriceViewModel&lt;/strong&gt;. When we do we call the internal method of updateView, which will read the property totalPriceText and set it on the text. Long story short, make a new label and give it a view model, it will automatically update that label’s text with the totalPriceText from that view model.&lt;/p&gt;
 
 &lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PriceLabel&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UILabel&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
 
