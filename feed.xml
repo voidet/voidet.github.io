@@ -14,7 +14,7 @@
 					
 				
 				
-					<description>
+					<description>&lt;p&gt;Value and references types are two&lt;/p&gt;
 </description>
 				
 				<pubDate>Sat, 04 Nov 2017 00:00:00 -0700</pubDate>
@@ -47,7 +47,7 @@
 
 &lt;h2 id=&quot;view-model&quot;&gt;View model&lt;/h2&gt;
 
-&lt;p&gt;I left this for last, but it is the &lt;strong&gt;VM&lt;/strong&gt; in &lt;strong&gt;MVVM&lt;/strong&gt;. This is where the meat and bones are. This is where all the logic, all the handling, all the updates, all the treatment gets done. The view model is the middleman between the view and the model. It’s job is to take ownership of all the business logic, view logic, server call logic. A view model takes in model objects, or other view models, and composes it self in a way that will set it self up to give a view what it needs. It will hand the view direct, hopefully, flat mapped properties for the view to read.&lt;/p&gt;
+&lt;p&gt;I left this for last, but it is the &lt;strong&gt;VM&lt;/strong&gt; in &lt;strong&gt;MVVM&lt;/strong&gt;. This is where the meat and bones are. This is where all the logic, all the handling, all the updates, all the treatment gets done. The view model is the middleman between the view and the model. It’s job is to take ownership of all the business logic, view logic, server call logic. A view model takes in model objects, or other view models, and composes itself in a way that will set itself up to give a view what it needs. It will hand the view direct, hopefully, flat mapped properties for the view to read.&lt;/p&gt;
 
 &lt;p&gt;So what does it look like?&lt;/p&gt;
 
