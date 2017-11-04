@@ -95,7 +95,7 @@ header::after {
 
 
 <article class="post">
-  <span class="meta">Nov 3, 2017 • 6&nbsp;min read</span>
+  <span class="meta">Nov 3, 2017 • 9&nbsp;min read</span>
 	<h1>MVVM for EMs</h1>
 		<p>Firstly let’s get the acronym out of the way. MVVM stands for model, view, view-model. It has a nice symmetry, but there are three components here and they all have separate responsibilities. The main purpose of MVVM is to keep business logic in a single place; the view model. All dependencies that are required to show something on the screen, to calculate something, all fall under the jurisdiction of the view-model. Let’s take a look at the responsibilities of each of the three components.</p>
 
@@ -132,12 +132,12 @@ header::after {
 
 <h3 id="the-model">The model</h3>
 
-<p>You ignore the init method. This is just an example that parsing concerns and mapping concerns can lay with the model object. This is not a view concern, logic or formatting outside of marshalling data presented from the server into the model object. Really, if you’re doing your API layer correctly for a client &lt;-&gt; server relationship, this really should be flatmapped and one to one easily parsed.</p>
+<p>You ignore the init method. This is just an example that parsing concerns and mapping concerns can lay with the model object. This is not a view concern, logic or formatting outside of marshaling data presented from the server into the model object. Really, if you’re doing your API layer correctly for a client &lt;-&gt; server relationship, this really should be flat mapped and one to one easily parsed.</p>
 
 <div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">struct</span> <span class="kt">TripPrice</span> <span class="p">{</span>
-  
+
   <span class="k">let</span> <span class="nv">price</span><span class="p">:</span> <span class="kt">Double</span>
-  
+
   <span class="nf">init</span><span class="p">?(</span><span class="nv">jsonResult</span><span class="p">:</span><span class="kt">Any</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">guard</span> <span class="k">let</span> <span class="nv">result</span> <span class="o">=</span> <span class="n">jsonResult</span> <span class="k">as?</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Double</span><span class="p">],</span>
     <span class="k">let</span> <span class="nv">price</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s">"totalPrice"</span><span class="p">]</span> <span class="k">else</span> <span class="p">{</span>
@@ -145,7 +145,7 @@ header::after {
     <span class="p">}</span>
     <span class="k">self</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">price</span>
   <span class="p">}</span>
-  
+
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -154,27 +154,16 @@ header::after {
 <p>Here you can see we need to initialize our PriceLabel object with a <strong>TripePriceViewModel</strong>. When we do we call the internal method of updateView, which will read the property totalPriceText and set it on the text. Long story short, make a new label and give it a view model, it will automatically update that label’s text with the totalPriceText from that view model.</p>
 
 <div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">PriceLabel</span> <span class="p">:</span> <span class="kt">UILabel</span> <span class="p">{</span>
-  
-  <span class="k">var</span> <span class="nv">viewModel</span><span class="p">:</span> <span class="kt">TripPriceViewModel</span> <span class="p">{</span>
-    <span class="k">didSet</span> <span class="p">{</span>
-      <span class="nf">updateView</span><span class="p">()</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-  
+
   <span class="nf">init</span><span class="p">(</span><span class="nv">viewModel</span><span class="p">:</span> <span class="kt">TripPriceViewModel</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">self</span><span class="o">.</span><span class="n">viewModel</span> <span class="o">=</span> <span class="n">viewModel</span>
-    <span class="k">super</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">frame</span><span class="p">:</span> <span class="kt">CGRect</span><span class="o">.</span><span class="n">zero</span><span class="p">)</span>
     <span class="nf">updateView</span><span class="p">()</span>
   <span class="p">}</span>
-  
-  <span class="kd">required</span> <span class="kd">public</span> <span class="nf">init</span><span class="p">?(</span><span class="n">coder</span> <span class="nv">aDecoder</span><span class="p">:</span> <span class="kt">NSCoder</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nf">fatalError</span><span class="p">(</span><span class="s">"Unimplemented init with coder"</span><span class="p">)</span>
-  <span class="p">}</span>
-  
-  <span class="kd">private</span> <span class="kd">func</span> <span class="nf">updateView</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="kd">func</span> <span class="nf">updateView</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">viewModel</span><span class="o">.</span><span class="n">totalPriceText</span>
   <span class="p">}</span>
-  
+
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -185,7 +174,7 @@ header::after {
 <p>The view model now does all the logic for us</p>
 
 <div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">TripPriceViewModel</span> <span class="p">{</span>
-	
+
   <span class="kd">private</span> <span class="k">var</span> <span class="nv">tripPrice</span><span class="p">:</span> <span class="kt">TripPrice</span><span class="p">?</span>
   <span class="k">var</span> <span class="nv">totalPriceText</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span>
     <span class="k">guard</span> <span class="k">let</span> <span class="nv">price</span> <span class="o">=</span> <span class="n">tripPrice</span><span class="p">?</span><span class="o">.</span><span class="n">price</span> <span class="k">else</span> <span class="p">{</span>
@@ -197,13 +186,13 @@ header::after {
   <span class="nf">init</span><span class="p">(</span><span class="nv">tripPrice</span><span class="p">:</span> <span class="kt">TripPrice</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">self</span><span class="o">.</span><span class="n">tripPrice</span> <span class="o">=</span> <span class="n">tripPrice</span>
   <span class="p">}</span>
-  
-  <span class="kd">func</span> <span class="nf">fetchResults</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="p">(</span><span class="nv">tripPrice</span><span class="p">:</span> <span class="kt">TripPrice</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="kd">func</span> <span class="nf">fetchResults</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="p">(</span><span class="nv">success</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">//Fetch some JSON and return it</span>
     <span class="n">tripPrice</span> <span class="o">=</span> <span class="kt">TripPrice</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
-    <span class="nf">completion</span><span class="p">(</span><span class="n">tripPrice</span><span class="p">)</span>
+    <span class="nf">completion</span><span class="p">(</span><span class="n">success</span><span class="p">)</span>
   <span class="p">}</span>
-	
+
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -212,38 +201,61 @@ header::after {
 <p>So what does this all mean? Let’s talk about how this all would play in together. Part of our view layer would also be a View Controller. A view controller is quite standard and you would be familiar with it in the MVC world. It’s part of the view lifecycle for a Mobile App, a presenter, a VC.</p>
 
 <div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">TripPriceViewController</span> <span class="p">:</span> <span class="kt">UIViewController</span> <span class="p">{</span>
-  
+
   <span class="k">let</span> <span class="nv">tripPriceViewModel</span><span class="p">:</span> <span class="kt">TripPriceViewModel</span>
   <span class="k">var</span> <span class="nv">totalPriceLabel</span><span class="p">:</span> <span class="kt">PriceLabel</span>
-  
+
   <span class="nf">init</span><span class="p">(</span><span class="nv">vm</span><span class="p">:</span> <span class="kt">TripPriceViewModel</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">self</span><span class="o">.</span><span class="n">tripPriceViewModel</span> <span class="o">=</span> <span class="n">vm</span>
     <span class="k">self</span><span class="o">.</span><span class="n">totalPriceLabel</span> <span class="o">=</span> <span class="kt">PriceLabel</span><span class="p">(</span><span class="nv">viewModel</span><span class="p">:</span> <span class="n">vm</span><span class="p">)</span>
-    <span class="k">super</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">nibName</span><span class="p">:</span><span class="kc">nil</span><span class="p">,</span> <span class="nv">bundle</span><span class="p">:</span><span class="kc">nil</span><span class="p">)</span>
   <span class="p">}</span>
-  
-  <span class="kd">required</span> <span class="kd">public</span> <span class="nf">init</span><span class="p">?(</span><span class="n">coder</span> <span class="nv">aDecoder</span><span class="p">:</span> <span class="kt">NSCoder</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nf">fatalError</span><span class="p">(</span><span class="s">"Unimplemented init with coder"</span><span class="p">)</span>
-  <span class="p">}</span>
-  
+
   <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">super</span><span class="o">.</span><span class="nf">viewDidLoad</span><span class="p">()</span>
     <span class="k">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="nf">addSubview</span><span class="p">(</span><span class="n">totalPriceLabel</span><span class="p">)</span>
-  
-    <span class="n">tripPriceViewModel</span><span class="o">.</span><span class="n">fetchResults</span> <span class="p">{</span> <span class="n">tripPrice</span> <span class="k">in</span>
-      <span class="k">self</span><span class="o">.</span><span class="n">totalPriceLabel</span><span class="o">.</span><span class="n">viewModel</span> <span class="o">=</span> <span class="kt">TripPriceViewModel</span><span class="p">(</span><span class="nv">tripPrice</span><span class="p">:</span> <span class="n">tripPrice</span><span class="p">)</span>
+
+    <span class="n">tripPriceViewModel</span><span class="o">.</span><span class="n">fetchResults</span> <span class="p">{</span> <span class="n">success</span> <span class="k">in</span>
+      <span class="k">if</span> <span class="n">success</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">tripPriceViewModel</span><span class="o">.</span><span class="nf">updateView</span><span class="p">()</span>
+      <span class="p">}</span>
     <span class="p">}</span>
   <span class="p">}</span>
 
 <span class="p">}</span>
 </code></pre></div></div>
 
-<h2 id="the-benefits">The Benefits</h2>
+<p>You can see that we get passed in a view model from whoever instantiated the view controller. This is useful to pass in data that the screen requires that the previous screen may of had and needs to pass along. We also setup our view and add it on screen when the view hierarchy is finished loading.</p>
 
-<ul>
-  <li>Dependency injection</li>
-  <li>Mocking/Testing</li>
-</ul>
+<p>Next we fetch some tripPrices, if it succeeded then we will call updateView(). Which simply looks at the viewModel’s contents back in the ViewModel. If you look back at fetchResults when we get results we set them back on the tripPrice property with a new TripPrice object. We then call back up to the completion block to let the <strong>View/ViewController</strong> (presentation layer) know it’s time to redraw the view.</p>
+
+<h2 id="reactive-functional-programming--mvvm">Reactive functional programming &amp; MVVM</h2>
+
+<p>There is another mechanism for views to be made aware that they need to redraw, thats in the form of signals with reactive functional programming (<strong>RFP</strong>). Look up <strong>reactive functional programming</strong> if you would like to see this concept applied to MVVM. In short, there’s a constant stream of signals being sent from the view models. The views subscribe to these signals, much like a FM radio, constantly listening. If the view hears something that interests them, like say “Hide Checkout Button” then the view will pick that value up and set its checkout button to hidden. The MVVM never hold view logic, as in, it doesn’t know what element to hide, nor what property its values are getting set on. It simply holds state and the logic of that state.</p>
+
+<p>So when the view gets a signal “Hide Checkout Button”, in the <strong>view model</strong> you will see something like:</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">self</span><span class="o">.</span><span class="n">checkoutButtonShouldBeVisible</span> <span class="o">=</span> <span class="kc">false</span>
+</code></pre></div></div>
+
+<p>but then in the <strong>view</strong>:</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="k">self</span><span class="o">.</span><span class="n">checkoutButtonShouldBeVisible</span> <span class="o">==</span> <span class="kc">false</span> <span class="p">{</span>
+  <span class="k">self</span><span class="o">.</span><span class="n">checkoutButton</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="benefits-of-mvvm">Benefits of MVVM</h2>
+
+<h3 id="modular-is-better">Modular is better</h3>
+
+<p>As you can see the view model is very modular. You pass in dependencies that it needs. Functions of the view model are broken down per responsibility and have minimal mutation on the object. This means testing becomes a breeze and is MVVM’s biggest win for me. You’re set up for dependency injection, meaning, you can pass in all the objects and their values without having to set up the view hierarchy, set up viewControllers etc. You’re then able to mock all the objects you like and build test coverage on a myriad of scenarios, all whilst testing the view model only.</p>
+
+<h3 id="rfp">RFP</h3>
+
+<p>When RFP is thrown into the mix, MVVM comes into its own. The ability for a view to react to the change of a properties state automatically is powerful. RFP comes with its own challenges though, and for that I don’t use it on the iOS platform (debugging is/was hell). Binding VM property state to properties on views allows direct mapping of state to view side effects. Its powerful, but with great power, comes great debugging. Be warned, you can go overboard with signals and RFP.</p>
+
+<h3 id="maintainability">Maintainability</h3>
+
+<p>No longer is your logic spread over multiple files for a particular screen. You can easily narrow in on a particular area of your app and know (hopefully) that all of its associated logic is in its counterpart ViewModel file. Having logic in a centralized place for a particular concern is a big win for maintainability.</p>
 
 <h2 id="further-reading">Further reading</h2>
 
@@ -253,7 +265,6 @@ header::after {
   <li><a href="http://amzn.to/2zhTj5V">Android Programming: The Big Nerd Ranch Guide (3rd Edition)</a></li>
   <li><a href="http://amzn.to/2zhTFth">iOS Programming: The Big Nerd Ranch Guide (6th Edition)</a></li>
 </ul>
-
 
   
     
