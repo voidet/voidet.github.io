@@ -101,7 +101,7 @@ header::after {
 
 <h2 id="model">Model</h2>
 
-<p>This is the first <strong>M</strong> of <strong>MVVM</strong>. The model’s sole task, and it is a basic one, is simply to store data. There is no logic in the model, no network calls. Simply a bunch of properties and potentially some handling of data to get these properties filled. For instance you may place some JSON parsing in the model object, but no transformation will be done outside the realm of mapping.</p>
+<p>This is the first <strong>M</strong> of <strong>MVVM</strong>. The model’s sole task, and it is a basic one, is simply to store data. There is no logic in the <strong>model</strong>, no network calls. Simply a bunch of properties and potentially some handling of data to get these properties filled. For instance you may place some JSON parsing in the <strong>model</strong> object, but no transformation will be done outside the realm of mapping.</p>
 
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w"> </span><span class="s2">"totalPrice"</span><span class="p">:</span><span class="w"> </span><span class="mf">30.99</span><span class="p">,</span><span class="w"> </span><span class="s2">"currencySymbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$"</span><span class="p">,</span><span class="w"> </span><span class="s2">"currencyCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="w"> </span><span class="p">}</span><span class="w">
 </span></code></pre></div></div>
@@ -110,11 +110,11 @@ header::after {
 
 <p>The next component is the view, the next <strong>V</strong> in the <strong>MVVM</strong> acronym. This is simple. It’s the stuff you see on screen, or whatever the client will consume. In the case of of a mobile app, the view may be a button, a label, or even an entire login screen. For an API the <strong>V</strong> may be the JSON that gets sent out to the client.</p>
 
-<p>There is no logic in the view. The view simply read values, or, in some cases, reacts to values, that get passed in. By the:</p>
+<p>There is no logic in the <strong>view</strong>. The <strong>view</strong> simply read values, or, in some cases, reacts to values, that get passed in. By the:</p>
 
 <h2 id="view-model">View model</h2>
 
-<p>I left this for last, but it is the <strong>VM</strong> in <strong>MVVM</strong>. This is where the meat and bones are. This is where all the logic, all the handling, all the updates, all the treatment gets done. The view model is the middleman between the view and the model. It’s job is to take ownership of all the business logic, view logic, server call logic. A view model takes in model objects, or other view models, and composes itself in a way that will set itself up to give a view what it needs. It will hand the view direct, hopefully, flat mapped properties for the view to read.</p>
+<p>I left this for last, but it is the <strong>VM</strong> in <strong>MVVM</strong>. This is where the meat and bones are. This is where all the logic, all the handling, all the updates, all the treatment gets done. The view model is the middleman between the view and the model. It’s job is to take ownership of all the business logic, view logic, server call logic. A <strong>view</strong> model takes in <strong>model</strong> objects, or other <strong>view models</strong>, and composes itself in a way that will set itself up to give a <strong>view</strong> what it needs. It will hand the <strong>view</strong> direct, hopefully, flat mapped properties for the <strong>view</strong> to read.</p>
 
 <p>So what does it look like?</p>
 
