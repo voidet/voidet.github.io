@@ -68,7 +68,7 @@
 
 &lt;h3 id=&quot;the-model&quot;&gt;The model&lt;/h3&gt;
 
-&lt;p&gt;You can ignore the init method in the example below. This is just an example that parsing concerns and mapping concerns can lay with the model object. This is not a view concern, logic or formatting outside of marshaling data presented from the server into the model object. Really, if you’re doing your API layer correctly for a client &amp;lt;-&amp;gt; server relationship, this really should be flat mapped and one to one easily parsed.&lt;/p&gt;
+&lt;p&gt;You can ignore the init method in the example below. This is just an example that parsing and mapping concerns can lay with the model object. The example parses in a JSON object and stores the &lt;em&gt;totalPrice&lt;/em&gt; from that object, storing it into price on TripPrice. This is not a view concern, logic or formatting outside of marshaling data presented from the server into the model object. Really, if you’re doing your API layer correctly for a client &amp;lt;-&amp;gt; server relationship, this really should be flat mapped and one to one easily parsed.&lt;/p&gt;
 
 &lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;TripPrice&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
 
