@@ -194,10 +194,14 @@ header::after {
     <span class="k">return</span> <span class="s">"The total trip price is </span><span class="se">\(</span><span class="n">tripPriceText</span><span class="se">)</span><span class="s"> </span><span class="se">\(</span><span class="n">price</span><span class="se">)</span><span class="s">"</span>
   <span class="p">}</span>
 
-  <span class="kd">func</span> <span class="nf">fetchResults</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">init</span><span class="p">(</span><span class="nv">tripPrice</span><span class="p">:</span> <span class="kt">TripPrice</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">self</span><span class="o">.</span><span class="n">tripPrice</span> <span class="o">=</span> <span class="n">tripPrice</span>
+  <span class="p">}</span>
+  
+  <span class="kd">func</span> <span class="nf">fetchResults</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="p">(</span><span class="nv">tripPrice</span><span class="p">:</span> <span class="kt">TripPrice</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">//Fetch some JSON and return it</span>
-    <span class="k">self</span><span class="o">.</span><span class="n">tripPrice</span> <span class="o">=</span> <span class="kt">TripPrice</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
-    <span class="nf">completion</span><span class="p">()</span>
+    <span class="n">tripPrice</span> <span class="o">=</span> <span class="kt">TripPrice</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
+    <span class="nf">completion</span><span class="p">(</span><span class="n">tripPrice</span><span class="p">)</span>
   <span class="p">}</span>
 	
 <span class="p">}</span>
@@ -226,8 +230,8 @@ header::after {
     <span class="k">super</span><span class="o">.</span><span class="nf">viewDidLoad</span><span class="p">()</span>
     <span class="k">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="nf">addSubview</span><span class="p">(</span><span class="n">totalPriceLabel</span><span class="p">)</span>
   
-    <span class="n">tripPriceViewModel</span><span class="o">.</span><span class="n">fetchResults</span> <span class="p">{</span>
-      <span class="k">self</span><span class="o">.</span><span class="n">totalPriceLabel</span><span class="o">.</span><span class="n">viewModel</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="n">tripPriceViewModel</span>
+    <span class="n">tripPriceViewModel</span><span class="o">.</span><span class="n">fetchResults</span> <span class="p">{</span> <span class="n">tripPrice</span> <span class="k">in</span>
+      <span class="k">self</span><span class="o">.</span><span class="n">totalPriceLabel</span><span class="o">.</span><span class="n">viewModel</span> <span class="o">=</span> <span class="kt">TripPriceViewModel</span><span class="p">(</span><span class="nv">tripPrice</span><span class="p">:</span> <span class="n">tripPrice</span><span class="p">)</span>
     <span class="p">}</span>
   <span class="p">}</span>
 
