@@ -95,7 +95,7 @@ header::after {
 
 
 <article class="post">
-  <span class="meta">Nov 3, 2017 • 9&nbsp;min read</span>
+  <span class="meta">Nov 3, 2017 • 10&nbsp;min read</span>
 	<h1>MVVM for EMs</h1>
 		<p>Firstly let’s get the acronym out of the way. MVVM stands for model, view, view-model. It has a nice symmetry, but there are three components here and they all have separate responsibilities. The main purpose of MVVM is to keep business logic in a single place; the view model. All dependencies that are required to show something on the screen, to calculate something, all fall under the jurisdiction of the view-model. Let’s take a look at the responsibilities of each of the three components.</p>
 
@@ -139,15 +139,15 @@ header::after {
 
 <div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">struct</span> <span class="kt">TripPrice</span> <span class="p">{</span>
 
-  <span class="k">let</span> <span class="nv">price</span><span class="p">:</span> <span class="kt">Double</span>
+    <span class="k">let</span> <span class="nv">price</span><span class="p">:</span> <span class="kt">Double</span>
 
-  <span class="nf">init</span><span class="p">?(</span><span class="nv">jsonResult</span><span class="p">:</span><span class="kt">Any</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">guard</span> <span class="k">let</span> <span class="nv">result</span> <span class="o">=</span> <span class="n">jsonResult</span> <span class="k">as?</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Double</span><span class="p">],</span>
-    <span class="k">let</span> <span class="nv">price</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s">"totalPrice"</span><span class="p">]</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="kc">nil</span>
+    <span class="nf">init</span><span class="p">?(</span><span class="nv">jsonResult</span><span class="p">:</span><span class="kt">Any</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">result</span> <span class="o">=</span> <span class="n">jsonResult</span> <span class="k">as?</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Double</span><span class="p">],</span>
+            <span class="k">let</span> <span class="nv">price</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s">"totalPrice"</span><span class="p">]</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">nil</span>
+        <span class="p">}</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">price</span>
     <span class="p">}</span>
-    <span class="k">self</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">price</span>
-  <span class="p">}</span>
 
 <span class="p">}</span>
 </code></pre></div></div>
@@ -156,16 +156,23 @@ header::after {
 
 <p>Here you can see we need to initialize our PriceLabel object with a <strong>TripPriceViewModel</strong>. When we do we call the internal method of updateView, which will read the property totalPriceText and set it on the text. Long story short, make a new label and give it a view model, it will automatically update that label’s text with the totalPriceText from that view model.</p>
 
+<p>There is a binding mechanism here also. So after a tripPrice is fetched, the <strong>view model</strong> will report back with the text that the view should update itself to. This binding is <code class="highlighter-rouge">viewModel.tripUpdatedCallback = { text in</code> and is a simple example of a callback.</p>
+
 <div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">PriceLabel</span> <span class="p">:</span> <span class="kt">UILabel</span> <span class="p">{</span>
 
-  <span class="nf">init</span><span class="p">(</span><span class="nv">viewModel</span><span class="p">:</span> <span class="kt">TripPriceViewModel</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">self</span><span class="o">.</span><span class="n">viewModel</span> <span class="o">=</span> <span class="n">viewModel</span>
-    <span class="nf">updateView</span><span class="p">()</span>
-  <span class="p">}</span>
+    <span class="k">let</span> <span class="nv">viewModel</span><span class="p">:</span> <span class="kt">TripPriceViewModel</span>
 
-  <span class="kd">func</span> <span class="nf">updateView</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">viewModel</span><span class="o">.</span><span class="n">totalPriceText</span>
-  <span class="p">}</span>
+    <span class="nf">init</span><span class="p">(</span><span class="nv">viewModel</span><span class="p">:</span> <span class="kt">TripPriceViewModel</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">viewModel</span> <span class="o">=</span> <span class="n">viewModel</span>
+        <span class="n">viewModel</span><span class="o">.</span><span class="n">tripUpdatedCallback</span> <span class="o">=</span> <span class="p">{</span> <span class="n">text</span> <span class="k">in</span>
+            <span class="k">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="p">}</span>
+        <span class="nf">updateView</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">updateView</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">viewModel</span><span class="o">.</span><span class="n">totalPriceText</span>
+    <span class="p">}</span>
 
 <span class="p">}</span>
 </code></pre></div></div>
@@ -174,61 +181,54 @@ header::after {
 
 <h3 id="the-view-model">The view model</h3>
 
-<p>The view model now does all the logic for us</p>
+<p>The view model now does all the logic for us. You can see there is some handling done in order to calculate the <code class="highlighter-rouge">totalPriceText</code>. This first checks if we have a price value, if we don’t we report back that we’re <em>fetching total price</em> otherwise we stitch together some pricing text.</p>
+
+<p><code class="highlighter-rouge">fetchResults</code> is the otherside of the coin for that binding to the view. We do some network calls out to the webservice to get our tripPrice. We then make a TripPrice object and then use the callback to report the updated text, which should be formatted if we have a properly formatted TripPrice.</p>
 
 <div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">TripPriceViewModel</span> <span class="p">{</span>
 
-  <span class="kd">private</span> <span class="k">var</span> <span class="nv">tripPrice</span><span class="p">:</span> <span class="kt">TripPrice</span><span class="p">?</span>
-  <span class="k">var</span> <span class="nv">totalPriceText</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span>
-    <span class="k">guard</span> <span class="k">let</span> <span class="nv">price</span> <span class="o">=</span> <span class="n">tripPrice</span><span class="p">?</span><span class="o">.</span><span class="n">price</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="s">"Fetching total price"</span>
+    <span class="kd">private</span> <span class="k">var</span> <span class="nv">tripPrice</span><span class="p">:</span> <span class="kt">TripPrice</span><span class="p">?</span>
+    <span class="k">var</span> <span class="nv">tripUpdatedCallback</span><span class="p">:</span> <span class="p">((</span><span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span>
+
+    <span class="k">var</span> <span class="nv">totalPriceText</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">price</span> <span class="o">=</span> <span class="n">tripPrice</span><span class="p">?</span><span class="o">.</span><span class="n">price</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="s">"Fetching total price"</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="s">"The total trip price is $</span><span class="se">\(</span><span class="n">price</span><span class="se">)</span><span class="s">"</span>
     <span class="p">}</span>
-    <span class="k">return</span> <span class="s">"The total trip price is </span><span class="se">\(</span><span class="n">tripPriceText</span><span class="se">)</span><span class="s"> </span><span class="se">\(</span><span class="n">price</span><span class="se">)</span><span class="s">"</span>
-  <span class="p">}</span>
 
-  <span class="nf">init</span><span class="p">(</span><span class="nv">tripPrice</span><span class="p">:</span> <span class="kt">TripPrice</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">self</span><span class="o">.</span><span class="n">tripPrice</span> <span class="o">=</span> <span class="n">tripPrice</span>
-  <span class="p">}</span>
+    <span class="nf">init</span><span class="p">(</span><span class="nv">tripPrice</span><span class="p">:</span> <span class="kt">TripPrice</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">tripPrice</span> <span class="o">=</span> <span class="n">tripPrice</span>
+        <span class="nf">fetchResults</span><span class="p">()</span>
+    <span class="p">}</span>
 
-  <span class="kd">func</span> <span class="nf">fetchResults</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="p">(</span><span class="nv">success</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">//Fetch some JSON and return it</span>
-    <span class="n">tripPrice</span> <span class="o">=</span> <span class="kt">TripPrice</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
-    <span class="nf">completion</span><span class="p">(</span><span class="n">success</span><span class="p">)</span>
-  <span class="p">}</span>
+    <span class="kd">func</span> <span class="nf">fetchResults</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">//Fetch some JSON and return it</span>
+        <span class="n">tripPrice</span> <span class="o">=</span> <span class="kt">TripPrice</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
+        <span class="nf">tripUpdatedCallback</span><span class="p">?(</span><span class="n">totalPriceText</span><span class="p">)</span>
+    <span class="p">}</span>
 
 <span class="p">}</span>
 </code></pre></div></div>
 
 <h3 id="stitching-it-all-together">Stitching it all together</h3>
 
-<p>So what does this all mean? Let’s talk about how this all would play in together. Part of our view layer would also be a View Controller. A view controller is quite standard and you would be familiar with it in the MVC world. It’s part of the view lifecycle for a Mobile App, a presenter, a VC.</p>
+<p>So what does this all mean? Let’s talk about how this all would play in together. Part of our view layer would also be a ViewController. A view controller is quite standard and you would be familiar with it in the MVC world. It’s part of the view lifecycle for a Mobile App, a presenter, a VC.</p>
+
+<p>There is minimal logic in the VC as you can see below. Instead it is mainly just used to marshall previous ViewModel objects and handle data flow to place onto view objects etc. There is no logic here outside of the life cycle of a viewController (loading and setting up views).</p>
 
 <div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">TripPriceViewController</span> <span class="p">:</span> <span class="kt">UIViewController</span> <span class="p">{</span>
 
-  <span class="k">let</span> <span class="nv">tripPriceViewModel</span><span class="p">:</span> <span class="kt">TripPriceViewModel</span>
-  <span class="k">var</span> <span class="nv">totalPriceLabel</span><span class="p">:</span> <span class="kt">PriceLabel</span>
+    <span class="k">let</span> <span class="nv">tripPriceViewModel</span><span class="p">:</span> <span class="kt">TripPriceViewModel</span>
+    <span class="k">var</span> <span class="nv">totalPriceLabel</span><span class="p">:</span> <span class="kt">PriceLabel</span>
 
-  <span class="nf">init</span><span class="p">(</span><span class="nv">vm</span><span class="p">:</span> <span class="kt">TripPriceViewModel</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">self</span><span class="o">.</span><span class="n">tripPriceViewModel</span> <span class="o">=</span> <span class="n">vm</span>
-    <span class="k">self</span><span class="o">.</span><span class="n">totalPriceLabel</span> <span class="o">=</span> <span class="kt">PriceLabel</span><span class="p">(</span><span class="nv">viewModel</span><span class="p">:</span> <span class="n">vm</span><span class="p">)</span>
-  <span class="p">}</span>
-
-  <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="nf">addSubview</span><span class="p">(</span><span class="n">totalPriceLabel</span><span class="p">)</span>
-
-    <span class="n">tripPriceViewModel</span><span class="o">.</span><span class="n">fetchResults</span> <span class="p">{</span> <span class="n">success</span> <span class="k">in</span>
-      <span class="k">if</span> <span class="n">success</span> <span class="p">{</span>
-        <span class="k">self</span><span class="o">.</span><span class="n">tripPriceViewModel</span><span class="o">.</span><span class="nf">updateView</span><span class="p">()</span>
-      <span class="p">}</span>
+    <span class="nf">init</span><span class="p">(</span><span class="nv">vm</span><span class="p">:</span> <span class="kt">TripPriceViewModel</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">tripPriceViewModel</span> <span class="o">=</span> <span class="n">vm</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">totalPriceLabel</span> <span class="o">=</span> <span class="kt">PriceLabel</span><span class="p">(</span><span class="nv">viewModel</span><span class="p">:</span> <span class="n">vm</span><span class="p">)</span>
     <span class="p">}</span>
-  <span class="p">}</span>
 
 <span class="p">}</span>
 </code></pre></div></div>
-
-<p>You can see that we get passed in a view model from whoever instantiated (created) the view controller. This is useful to pass in data that the screen requires that the previous screen may of had and needs to pass along. We also setup our view and add it on screen when the view hierarchy is finished loading.</p>
-
-<p>Next we fetch some tripPrices, if it succeeded then we will call updateView(). Which simply looks at the viewModel’s contents back in the ViewModel. If you look back at fetchResults when we get results we set them back on the tripPrice property with a new TripPrice object. We then call back up to the completion block to let the <strong>View/ViewController</strong> (presentation layer) know it’s time to redraw the view.</p>
 
 <h2 id="reactive-functional-programming--mvvm">Reactive functional programming &amp; MVVM</h2>
 
