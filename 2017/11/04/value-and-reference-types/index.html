@@ -95,7 +95,7 @@ header::after {
 
 
 <article class="post">
-  <span class="meta">Nov 4, 2017 • Less than a minute read</span>
+  <span class="meta">Nov 4, 2017 • 5&nbsp;min read</span>
 	<h1>Value & Reference Types</h1>
 		<p>Value and references types are different ways in which data gets handled as it flows through your application. They both have implications on perfomance &amp; architecture. Both introduce complexities of which mishandled can introduce some unexpected behaviours in your applications performance, aka bugs.</p>
 
@@ -103,11 +103,92 @@ header::after {
 
 <h2 id="reference-types">Reference types</h2>
 
-<p>Reference types are all about manipulating the original object. A reference can be thought of as an address; that being an address in memory. For our example <em>Phil</em> the garden gnome. Phil has an address, a street address. If we want to talk about Phil, we reference him by his street address. I’m talking about <em>Phil</em> at “789 Main Street, North Pole”.</p>
+<p>A reference can be thought of as an address; that being an address in memory. For our example <em>Phil</em> the garden gnome. Phil has a street address (he lives in a garden, but he still has an address). If we want to talk about Phil, we reference him by his street address. There can be many Phil’s in the world. Let’s face it Phil came from a factory. But there is only one Phil at this street address: I’m talking about <em>Phil</em> at “789 Main Street, North Pole”.</p>
+
+<p>So what does this mean in code? Well you might see examples of:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">function2</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">param</span><span class="p">)</span> <span class="p">{</span>
+</code></pre></div></div>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">myFunction</span><span class="p">(</span><span class="k">inout</span> <span class="nv">input</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="p">{</span>
+</code></pre></div></div>
+
+<pre><code class="language-objective-c">- (NSString *)myFunction(NSString *input) {
+</code></pre>
+
+<p>Here you can see multiple ways to delcare that the input is of type reference. The *’s or the fact that it’s inout or sometimes you see “&amp;” before a variable, all indicate you are pointing to a reference of an object.</p>
+
+<p>When dealing with references, you’re dealing with one object, one space in memory. That address is a memory address. Like Phil, when you send a letter to Phil at 789 Main Street, North Pole, you’re sending a message to that one Phil. Phil can receive multiple letters from multiple sources.</p>
+
+<p>This gets tricky when you start to modify Phil. Multiple messages or multiple actions that affect Phil can change other peoples expectations. Let’s take the following pseduocode as an example:</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">var</span> <span class="nv">phil</span> <span class="o">=</span> <span class="kt">Phil</span><span class="p">()</span> <span class="c1">// This is somewhere in the code</span>
+
+<span class="c1">// Painter A</span>
+<span class="n">phil</span><span class="o">.</span><span class="nf">paintPants</span><span class="p">(</span><span class="nv">color</span><span class="p">:</span> <span class="o">.</span><span class="kt">Red</span><span class="p">)</span>
+
+<span class="c1">// Painter B</span>
+<span class="n">phil</span><span class="o">.</span><span class="nf">paintPants</span><span class="p">(</span><span class="nv">color</span><span class="p">:</span> <span class="o">.</span><span class="kt">Green</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>So what color are Phil’s pants? Well it depends on who called paintPants last! So if Painter A depended on the fact that Phil’s pants were Red to paint Phil’s shirt, then, they might actually be green! This is called a <strong>race condition</strong>, and reference types are susceptible to this side effect. It can lead to unexpected behavior; bugs.</p>
 
 <h2 id="value-types">Value types</h2>
 
-<p>Next we’ll look at value types. Value types are all about</p>
+<p>Next we’ll look at value types. Value types are exactly that, they are variables that contain values. The variables are not pointers to another point in memory, instead the value explicitly points to its own space in memory, no other place. So what does that mean in contrast to <strong>reference types</strong>? Let’s take a look at a value type sequentially then vs a reference type.</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">struct</span> <span class="kt">Gnome</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="k">var</span> <span class="nv">gnome</span> <span class="o">=</span> <span class="kt">Gnome</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"Phil"</span><span class="p">)</span>
+<span class="k">var</span> <span class="nv">gnomeB</span> <span class="o">=</span> <span class="n">gnome</span>
+<span class="n">gnomeB</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Robert"</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">gnome</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="c1">// returns Phil</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">gnomeB</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="c1">// returns Robert</span>
+</code></pre></div></div>
+
+<p>Above you can see that the assignment of gnome to gnomeB introduces some sideeffects for how the variables get used further on in code. When we do <code class="highlighter-rouge">gnomeB = gnome</code> we’re actually creating a copy in our memory. We in effect take a copy of gnome, put it in its own memory address, from then on the original Gnome won’t be modified if using this copy.</p>
+
+<p>How is this a value type? The above example is in Swift. Swift has value types such as Structs and primitive values. So we know if its a struct we can expect copies.</p>
+
+<p>Let’s now play out the above example using a reference type. Again using swift we’ll change the struct to be a class type, a reference type:</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">Gnome</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
+    
+    <span class="nf">init</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">var</span> <span class="nv">gnome</span> <span class="o">=</span> <span class="kt">Gnome</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"Phil"</span><span class="p">)</span>
+<span class="k">var</span> <span class="nv">gnomeB</span> <span class="o">=</span> <span class="n">gnome</span>
+<span class="n">gnomeB</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Robert"</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">gnome</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="c1">// returns Robert</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">gnomeB</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="c1">// returns Robert</span>
+</code></pre></div></div>
+<p>So we can see above that they both print “Robert”. We’re using pointers, or references, to modify the one location in memory.</p>
+
+<h2 id="the-memory">The memory</h2>
+
+<p>From the two examples above lets print out their memory addresses to prove value vs reference types are all about how we store and access our variables in memory:</p>
+
+<h3 id="reference-types-1">Reference types</h3>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">withUnsafePointer</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">gnome</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="p">{</span> <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="nv">$0</span><span class="se">)</span><span class="s">"</span> <span class="p">)}</span> <span class="c1">// 0x000060c0000584c0</span>
+<span class="nf">withUnsafePointer</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">gnomeB</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="p">{</span> <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="nv">$0</span><span class="se">)</span><span class="s">"</span> <span class="p">)}</span> <span class="c1">// 0x000060c0000584c0</span>
+</code></pre></div></div>
+
+<h3 id="value-types-1">Value types</h3>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">withUnsafePointer</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">gnome</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="p">{</span> <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="nv">$0</span><span class="se">)</span><span class="s">"</span> <span class="p">)}</span> <span class="c1">// 0x000000011ace3830</span>
+<span class="nf">withUnsafePointer</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">gnomeB</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="p">{</span> <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="nv">$0</span><span class="se">)</span><span class="s">"</span> <span class="p">)}</span> <span class="c1">// 0x000000011ace3848</span>
+</code></pre></div></div>
+
+<p>You can see that the same memory address was used for reference types, but a new address for value types.</p>
 
   
     
