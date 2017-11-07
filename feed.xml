@@ -106,6 +106,19 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;You can see that the same memory address was used for reference types, but a new address for value types.&lt;/p&gt;
+
+&lt;h2 id=&quot;more-reading&quot;&gt;More reading&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://amzn.to/2yfzBUV&quot;&gt;Swift Algorithms &amp;amp; Data Structures&lt;/a&gt; (I helped write a chapter)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://amzn.to/2yeIBJU&quot;&gt;Swift Programming: The Big Nerd Ranch Guide (2nd Edition)&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;​&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 </description>
 				
 				<pubDate>Mon, 06 Nov 2017 00:00:00 -0800</pubDate>
