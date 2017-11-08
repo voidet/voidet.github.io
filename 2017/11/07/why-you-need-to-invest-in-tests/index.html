@@ -95,7 +95,7 @@ header::after {
 
 
 <article class="post">
-  <span class="meta">Nov 7, 2017 • 9&nbsp;min read</span>
+  <span class="meta">Nov 7, 2017 • 8&nbsp;min read</span>
 	<h1>Why You Need To Invest In Tests</h1>
 		<p>As an engineering manager have you ever been on a project where your developers are far too scared to touch a line of code? How long is your manual quality assurance team spending on regression efforts? How many users are complaining features, new and old, are breaking when they’re trying to use them? How often is your boss coming to you asking why in the world your team’s progress seems to be either slowing, or even worse, going backwards? I’ll admit that I’ve been on many teams with this nightmarish fear; we moved slow, we broke things, we wanted to start again.</p>
 
@@ -126,16 +126,16 @@ header::after {
 
 <div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">sayGreeting</span><span class="p">(</span><span class="kt">Bool</span> <span class="n">isMorning</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="p">{</span>
   <span class="k">return</span> <span class="n">isMorning</span> <span class="p">?</span> <span class="s">"Good Morg!"</span> <span class="p">:</span> <span class="s">"nigh nigh!"</span>
-<span class="p">}</span><span class="err">```</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
-<span class="kt">Would</span> <span class="n">fail</span> <span class="n">these</span> <span class="n">tests</span><span class="p">,</span> <span class="k">in</span> <span class="n">both</span> <span class="n">cases</span><span class="o">.</span>
+<p>Would fail these tests, in both cases.</p>
 
-<span class="cp">## Writing code then tests</span>
+<h2 id="writing-code-then-tests">Writing code then tests</h2>
 
-<span class="kt">So</span> <span class="n">when</span> <span class="k">do</span> <span class="n">we</span> <span class="n">write</span> <span class="n">tests</span><span class="p">?</span> <span class="kt">Sometimes</span> <span class="n">developers</span> <span class="n">will</span> <span class="n">write</span> <span class="n">tests</span> <span class="n">after</span> <span class="n">the</span> <span class="n">fact</span><span class="o">.</span> <span class="kt">However</span> <span class="n">that</span> <span class="n">can</span> <span class="n">be</span> <span class="n">risky</span> <span class="n">from</span> <span class="n">many</span> <span class="n">perspectives</span><span class="o">.</span> <span class="kt">The</span> <span class="n">biggest</span> <span class="n">issue</span> <span class="k">is</span> <span class="n">that</span> <span class="n">we</span><span class="err">'</span><span class="n">re</span> <span class="n">human</span><span class="o">.</span> <span class="kt">Instead</span> <span class="n">of</span> <span class="n">analyzing</span> <span class="n">the</span> <span class="n">business</span> <span class="n">rules</span> <span class="n">that</span> <span class="n">should</span> <span class="n">be</span> <span class="n">tested</span><span class="p">,</span> <span class="n">instead</span> <span class="n">we</span> <span class="n">start</span> <span class="n">to</span> <span class="n">examine</span> <span class="n">what</span> <span class="n">the</span> <span class="n">code</span> <span class="n">does</span> <span class="n">and</span> <span class="n">write</span> <span class="n">tests</span> <span class="n">that</span> <span class="n">simply</span> <span class="n">cover</span> <span class="n">what</span> <span class="n">we</span><span class="err">'</span><span class="n">ve</span> <span class="n">written</span><span class="o">.</span> <span class="kt">Let</span><span class="err">'</span><span class="n">s</span> <span class="n">look</span> <span class="n">at</span> <span class="n">a</span> <span class="n">simple</span> <span class="n">example</span> <span class="n">you</span> <span class="n">may</span> <span class="n">see</span> <span class="k">in</span> <span class="n">your</span> <span class="n">code</span> <span class="n">base</span><span class="p">,</span> <span class="n">then</span> <span class="n">we</span><span class="err">'</span><span class="n">ll</span> <span class="n">look</span> <span class="n">at</span> <span class="n">all</span> <span class="n">the</span> <span class="n">possibilities</span> <span class="k">where</span> <span class="n">this</span> <span class="n">could</span> <span class="n">go</span> <span class="n">wrong</span><span class="o">.</span>
+<p>So when do we write tests? Sometimes developers will write tests after the fact. However that can be risky from many perspectives. The biggest issue is that we’re human. Instead of analyzing the business rules that should be tested, instead we start to examine what the code does and write tests that simply cover what we’ve written. Let’s look at a simple example you may see in your code base, then we’ll look at all the possibilities where this could go wrong.</p>
 
-<span class="err">```</span><span class="n">swift</span>
-<span class="kd">func</span> <span class="nf">formatCurrency</span><span class="p">(</span><span class="nv">currencyCode</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">amount</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="p">{</span>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">formatCurrency</span><span class="p">(</span><span class="nv">currencyCode</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">amount</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kt">String</span><span class="p">(</span><span class="nv">format</span><span class="p">:</span> <span class="s">"%@%.2f"</span><span class="p">,</span> <span class="n">currencyCode</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -194,6 +194,9 @@ header::after {
   <li><a href="http://amzn.to/2zFaEXs">Test-Driven iOS Development with Swift 3</a></li>
   <li><a href="http://amzn.to/2zFaEXs">iOS Programming: The Big Nerd Ranch Guide</a></li>
 </ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
 
   
     
