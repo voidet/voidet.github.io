@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+	<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>
+
+Why You Need To Invest In Tests • manageering.
+
+</title>
+<meta name="description" content="We'll examine what tests are, how they work and why you, your team and your company should be investing in them An Engineering Manager in San Francisco. Has Thoughts. Has typed these thoughts">
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed.xml">
+
+<!-- icons -->
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+
+<meta name="theme-color" content="#FF3D7F">
+<meta name="msapplication-TileColor" content="#00f0ff">
+<meta name="msapplication-TileImage" content="/mstile-310x310.png">
+<!-- /icons -->
+
+<!-- og tags -->
+<meta property="og:site_name" content="manageering.">
+<meta property="og:title" content="Why You Need To Invest In Tests • manageering.">
+<meta property="og:locale" content="en">
+
+  
+    <meta property="og:image" content="http://manageering.us/img/og-image.jpg">
+  
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://manageering.us/2017/11/07/why-you-need-to-invest-in-tests/">
+<meta property="og:description" content="
+
+We'll examine what tests are, how they work and why you, your team and your company should be investing in them
+">
+<!-- /og tags -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="/js/modernizr.js"></script>
+<script src="/js/fitvids.js"></script>
+<link href='//fonts.googleapis.com/css?family=Source+Code+Pro:400,700|Source+Sans+Pro:600,900|Crimson+Text:700italic,600,600italic,400,700,400italic' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="/css/reset.css">
+<link rel="stylesheet" href="/css/pygments.css">
+
+<link rel="stylesheet" href="/css/style.css">
+<!--[if gte IE 9]>
+  <style type="text/css">
+    .gradient {
+       filter: none;
+    }
+  </style>
+<![endif]-->
+
+
+<style>
+header {
+  margin-bottom: 40px;
+}
+@media all and (min-width: 500px) {
+  header {
+    margin-bottom: 100px;
+  }
+}
+header::after {
+  display: none;
+}
+</style>
+
+
+</head>
+<body>
+	
+	<div class="wrap">
+		<header>
+  <a href="/" class="website-title">
+    
+      manageering.
+    
+
+  </a>
+  <nav>
+  <a href="/about/">About</a>
+  <a href="/archive/">Archive</a>
+  <a href="/contact/">Contact</a>
+</nav>
+
+  
+</header>
+
+		
+
+
+<article class="post">
+  <span class="meta">Nov 7, 2017 • 9&nbsp;min read</span>
+	<h1>Why You Need To Invest In Tests</h1>
+		<p>As an engineering manager have you ever been on a project where your developers are far too scared to touch a line of code? How long is your manual quality assurance team spending on regression efforts? How many users are complaining features, new and old, are breaking when they’re trying to use them? How often is your boss coming to you asking why in the world your team’s progress seems to be either slowing, or even worse, going backwards? I’ll admit that I’ve been on many teams with this nightmarish fear; we moved slow, we broke things, we wanted to start again.</p>
+
+<h2 id="building-a-deck-without-sealing-it">Building a deck without sealing it</h2>
+
+<p>I like to think of the analogy of building a deck but not sealing it. Sure you can go and spend 2 months building a deck, then start building &amp; installing railings. Then you might move onto building the planter boxes. But in the 3 months you spent building all these auxiliary features your deck has degraded because you didn’t seal it. If you had of put a seal on it your previous work would of remained in tact even though you were carrying on building items on top of it.</p>
+
+<p>Code is just like this analogy, it rots. It degrades over time the more change that builds up around it. This is why it is good to invest time, effort and lets face it, money, into securing the efforts we have previously put in.</p>
+
+<h2 id="welcome-to-tests">Welcome to tests</h2>
+
+<p>Tests ensure what you’re inspecting produces the expected outcome. They come in many forms, but my prime focus will be on unit testing. Essentially unit tests are a way to ensure that a particular input generates a particular output. Unit tests are a means of testing isolated <em>units</em> of code to ensure they are meeting expectations. So let’s take some code as an example:</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">sayGreeting</span><span class="p">(</span><span class="kt">Bool</span> <span class="n">isMorning</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">isMorning</span> <span class="p">?</span> <span class="s">"Good Morning!"</span> <span class="p">:</span> <span class="s">"Night Night!"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now this example may not even be that far removed from something you might actually see in your code base. A simple bit of logic that produces a specific outcome. Its simple, but very much a common application. Let’s just see what a test would look like to ensure that this method will only ever return the input that it gets sent:</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">testSayGreetingReturnExpectedGreeting</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kt">XCTAssertEqual</span><span class="p">(</span><span class="nf">sayGreeting</span><span class="p">(</span><span class="kc">true</span><span class="p">),</span> <span class="s">"Good Morning!"</span><span class="p">)</span>
+  <span class="kt">XCTAssertEqual</span><span class="p">(</span><span class="nf">sayGreeting</span><span class="p">(</span><span class="kc">false</span><span class="p">),</span> <span class="s">"Night Night!"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can see that we test both the true and false inputs to ensure the outputs are indeed saying goodnight when its night. It means if we ever change this method to do something additional, these tests should break! For example:</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">sayGreeting</span><span class="p">(</span><span class="kt">Bool</span> <span class="n">isMorning</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">isMorning</span> <span class="p">?</span> <span class="s">"Good Morg!"</span> <span class="p">:</span> <span class="s">"nigh nigh!"</span>
+<span class="p">}</span><span class="err">```</span>
+
+<span class="kt">Would</span> <span class="n">fail</span> <span class="n">these</span> <span class="n">tests</span><span class="p">,</span> <span class="k">in</span> <span class="n">both</span> <span class="n">cases</span><span class="o">.</span>
+
+<span class="cp">## Writing code then tests</span>
+
+<span class="kt">So</span> <span class="n">when</span> <span class="k">do</span> <span class="n">we</span> <span class="n">write</span> <span class="n">tests</span><span class="p">?</span> <span class="kt">Sometimes</span> <span class="n">developers</span> <span class="n">will</span> <span class="n">write</span> <span class="n">tests</span> <span class="n">after</span> <span class="n">the</span> <span class="n">fact</span><span class="o">.</span> <span class="kt">However</span> <span class="n">that</span> <span class="n">can</span> <span class="n">be</span> <span class="n">risky</span> <span class="n">from</span> <span class="n">many</span> <span class="n">perspectives</span><span class="o">.</span> <span class="kt">The</span> <span class="n">biggest</span> <span class="n">issue</span> <span class="k">is</span> <span class="n">that</span> <span class="n">we</span><span class="err">'</span><span class="n">re</span> <span class="n">human</span><span class="o">.</span> <span class="kt">Instead</span> <span class="n">of</span> <span class="n">analyzing</span> <span class="n">the</span> <span class="n">business</span> <span class="n">rules</span> <span class="n">that</span> <span class="n">should</span> <span class="n">be</span> <span class="n">tested</span><span class="p">,</span> <span class="n">instead</span> <span class="n">we</span> <span class="n">start</span> <span class="n">to</span> <span class="n">examine</span> <span class="n">what</span> <span class="n">the</span> <span class="n">code</span> <span class="n">does</span> <span class="n">and</span> <span class="n">write</span> <span class="n">tests</span> <span class="n">that</span> <span class="n">simply</span> <span class="n">cover</span> <span class="n">what</span> <span class="n">we</span><span class="err">'</span><span class="n">ve</span> <span class="n">written</span><span class="o">.</span> <span class="kt">Let</span><span class="err">'</span><span class="n">s</span> <span class="n">look</span> <span class="n">at</span> <span class="n">a</span> <span class="n">simple</span> <span class="n">example</span> <span class="n">you</span> <span class="n">may</span> <span class="n">see</span> <span class="k">in</span> <span class="n">your</span> <span class="n">code</span> <span class="n">base</span><span class="p">,</span> <span class="n">then</span> <span class="n">we</span><span class="err">'</span><span class="n">ll</span> <span class="n">look</span> <span class="n">at</span> <span class="n">all</span> <span class="n">the</span> <span class="n">possibilities</span> <span class="k">where</span> <span class="n">this</span> <span class="n">could</span> <span class="n">go</span> <span class="n">wrong</span><span class="o">.</span>
+
+<span class="err">```</span><span class="n">swift</span>
+<span class="kd">func</span> <span class="nf">formatCurrency</span><span class="p">(</span><span class="nv">currencyCode</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">amount</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kt">String</span><span class="p">(</span><span class="nv">format</span><span class="p">:</span> <span class="s">"%@%.2f"</span><span class="p">,</span> <span class="n">currencyCode</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can see here that we take in a currencyCode and then an amount and return a formatted price with two decimals. So from this example you can start to gather some expectations simply based on the method signature and return type. Let’s break these expectations down:</p>
+
+<ul>
+  <li>Must have a currency symbol</li>
+  <li>Must only have two decimal places</li>
+  <li>Must have two decimal places even if the number is a whole number</li>
+  <li>Currency code can have many characters</li>
+  <li>Must return concatenation of both inputs to form a string</li>
+  <li>Currency code can be 0 length</li>
+</ul>
+
+<p>So we have many expectations of what this method can return. Obviously the above code block doesn’t cater to all of these expectations; which is why…. writing code first sets false expectations. This is also why writing tests first ensures that we cater to all the business needs as well as acting as enforcers for proper implementation code to be written.</p>
+
+<h2 id="test-driven-development">Test Driven Development</h2>
+
+<p>You’ve seen how wrong the above formatCurrency function could end up, simply by missing so many expectations. So how should we write our code? Red to Green.</p>
+
+<p>Welcome to Test driven development (<strong>TDD</strong>). TDD is a development paradigm whereby logic is built up in test cases initially. These test cases are run against missing implementations, in turn, they fail, the tests return red. Once all expectations are defined in tests for a particular unit of code then implementation begins. The unit test cases are continuously run (sometimes even automatically once save is pressed) against the implementation. It can then be defined that once all test cases pass then the implementation is complete.</p>
+
+<p>The beauty of working in this environment is that you’re actually investing in security whilst also working off of a template for your implementation. This goes one step further, lets assume your team has exceptional test coverage as you’ve been doing TDD for quite sometime. If your implementation somehow introduces side effects into the code base, in that other units of code are affected by the output or changes your code introduces, the test cases of these implementations will also alert you that you’ve broken their contracts!</p>
+
+<h2 id="pushback-on-tdd-as-an-em">Pushback on TDD as an EM</h2>
+
+<p>Here are some items of challenge you may receive in your position as an engineering manager:</p>
+
+<ul>
+  <li>
+    <p>TDD is too slow, I just want to code and ship this thing!</p>
+
+    <p><em>This is all well and good, but is this person investing their money in this product? Will they be here 10 years from now to help maintain the code they are writing? You want to ensure your code has longevity and don’t think that comes from just readability. Readability in itself is not longevity of code, architecture is not longevity of code; both of these items introduce efficiencies for future developers, but that isn’t longevity. longevity of code is code that doesn’t rot. It’s code that people aren’t afraid to touch, no matter how readable it seemingly may be. Readability can escalate to “this one line fix is simple”… to an over the weekend outage quite easily. Without tests, you have an uninsured investment. Make no mistake of this.</em></p>
+  </li>
+  <li>
+    <p>I’ll write the tests in the next sprint or as a fast follow</p>
+
+    <p><em>Well there’s a red flag already. The tests were not written side by side with the code in the first place. How are you so sure all the proper logic has been baked in and edge cases thought of without putting the logic and cases in isolation? Push back and demand excellence from your developers. Challenge them that no code should be introduced that does not have the proper insurance placed upon it. Sure their code may run, but who’s to say a merge conflict shortly after may in fact break their code?</em></p>
+  </li>
+  <li>
+    <p>I didn’t write tests in my last job, we got stuff out the door faster than Amazon prime!
+<em>This is an easy one. Ask how they think the developers feel that took their job at their last organization? How would they like to operate in a codebase with no security that what they’re touching isn’t going to introduce some unwanted, no, just any side effect. I would like to hear the justification of this. If there is no resolution start gathering data on how many defects come back from the stories without tests. This includes other developers breaking their code. This will tell you how valuable those tests would of been and make the case for investment.</em></p>
+  </li>
+  <li>
+    <p>This is just throwaway code anyway!
+<em>I mean, a hotfix or a patch happens. Some requirement wasn’t captured, a developer or QA member didn’t read the acceptance criteria properly and something got out into regression that was unexpected. I understand you want to fix fast and move forward. But if you don’t do it now, honestly, do you and your developers have the discipline to do it later? Hold off the release and be the gatekeeper your codebase desperately needs you to be. Don’t let it in unless you have a security guard protecting the interests of that logic. No tests, you’re not coming in. Ultimately, your job is to ensure results, lets make these results be a high defect count.</em></p>
+  </li>
+</ul>
+
+<h2 id="more-reading">More Reading</h2>
+
+<ul>
+  <li><a href="http://amzn.to/2zEps8u">Clean Code: A Handbook of Agile Software Craftsmanship </a></li>
+  <li><a href="http://amzn.to/2zEpxsO">Essential Scrum: A Practical Guide to the Most Popular Agile Process</a></li>
+  <li><a href="http://amzn.to/2zFaEXs">Test-Driven iOS Development with Swift 3</a></li>
+  <li><a href="http://amzn.to/2zFaEXs">iOS Programming: The Big Nerd Ranch Guide</a></li>
+</ul>
+
+  
+    
+      
+        <small><em>Post by: RS </em></small>
+      
+    
+  
+</article>
+
+
+
+
+
+	  <script>
+	    $("article").fitVids();
+	    $('article:not(.page) p').each(function(i){
+				if (($(this).find('img').length) && (!$.trim($(this).text()).length))  {
+					$(this).addClass('img-only');
+				}
+				if ($.trim($(this).text()).length - $.trim($(this).find('small').text()).length == 0 && ($(this).find('img').length)){
+					$(this).addClass('img-only-source');
+				}
+	  	});
+	  </script>
+	</div>
+	<footer>
+  <div class="inner">
+    <p>Theme crafted by <a href="http://steinvc.github.io/holo-alfa/">Stijn</a><br />
+    <b>Running:</b> Level 2 • nxt lvl
+1km • 52% into level.<br /><b>Cycling:</b> Level 2 • nxt lvl
+255km • 27% into level</p>
+  </div>
+</footer>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-107118240-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

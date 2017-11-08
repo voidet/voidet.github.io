@@ -7,6 +7,118 @@
 		<atom:link href="http://manageering.us/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Why You Need To Invest In Tests</title>
+				
+					
+						<dc:creator>RS</dc:creator>
+					
+				
+				
+					<description>&lt;p&gt;As an engineering manager have you ever been on a project where your developers are far too scared to touch a line of code? How long is your manual quality assurance team spending on regression efforts? How many users are complaining features, new and old, are breaking when they’re trying to use them? How often is your boss coming to you asking why in the world your team’s progress seems to be either slowing, or even worse, going backwards? I’ll admit that I’ve been on many teams with this nightmarish fear; we moved slow, we broke things, we wanted to start again.&lt;/p&gt;
+
+&lt;h2 id=&quot;building-a-deck-without-sealing-it&quot;&gt;Building a deck without sealing it&lt;/h2&gt;
+
+&lt;p&gt;I like to think of the analogy of building a deck but not sealing it. Sure you can go and spend 2 months building a deck, then start building &amp;amp; installing railings. Then you might move onto building the planter boxes. But in the 3 months you spent building all these auxiliary features your deck has degraded because you didn’t seal it. If you had of put a seal on it your previous work would of remained in tact even though you were carrying on building items on top of it.&lt;/p&gt;
+
+&lt;p&gt;Code is just like this analogy, it rots. It degrades over time the more change that builds up around it. This is why it is good to invest time, effort and lets face it, money, into securing the efforts we have previously put in.&lt;/p&gt;
+
+&lt;h2 id=&quot;welcome-to-tests&quot;&gt;Welcome to tests&lt;/h2&gt;
+
+&lt;p&gt;Tests ensure what you’re inspecting produces the expected outcome. They come in many forms, but my prime focus will be on unit testing. Essentially unit tests are a way to ensure that a particular input generates a particular output. Unit tests are a means of testing isolated &lt;em&gt;units&lt;/em&gt; of code to ensure they are meeting expectations. So let’s take some code as an example:&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sayGreeting&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isMorning&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isMorning&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Good Morning!&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Night Night!&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now this example may not even be that far removed from something you might actually see in your code base. A simple bit of logic that produces a specific outcome. Its simple, but very much a common application. Let’s just see what a test would look like to ensure that this method will only ever return the input that it gets sent:&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;testSayGreetingReturnExpectedGreeting&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;XCTAssertEqual&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sayGreeting&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Good Morning!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;XCTAssertEqual&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sayGreeting&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Night Night!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can see that we test both the true and false inputs to ensure the outputs are indeed saying goodnight when its night. It means if we ever change this method to do something additional, these tests should break! For example:&lt;/p&gt;
+
+&lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sayGreeting&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isMorning&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isMorning&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Good Morg!&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;nigh nigh!&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;```&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;Would&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fail&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;these&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tests&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;both&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cases&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
+
+&lt;span class=&quot;cp&quot;&gt;## Writing code then tests&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;So&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;we&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;write&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tests&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Sometimes&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;developers&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;will&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;write&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tests&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;after&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fact&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;However&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;that&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;can&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;risky&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;many&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;perspectives&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;The&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;biggest&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;issue&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;that&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;we&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;re&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;human&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Instead&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;analyzing&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;business&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rules&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;that&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;should&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tested&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;instead&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;we&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;start&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;examine&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;what&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;does&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;write&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tests&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;that&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simply&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cover&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;what&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;we&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ve&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;written&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Let&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;look&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;at&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simple&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;example&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;you&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;may&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;see&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;your&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;we&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ll&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;look&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;at&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;all&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;possibilities&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;this&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;could&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;go&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wrong&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
+
+&lt;span class=&quot;err&quot;&gt;```&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;swift&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;formatCurrency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;currencyCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;amount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;%@%.2f&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;currencyCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;angle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can see here that we take in a currencyCode and then an amount and return a formatted price with two decimals. So from this example you can start to gather some expectations simply based on the method signature and return type. Let’s break these expectations down:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Must have a currency symbol&lt;/li&gt;
+  &lt;li&gt;Must only have two decimal places&lt;/li&gt;
+  &lt;li&gt;Must have two decimal places even if the number is a whole number&lt;/li&gt;
+  &lt;li&gt;Currency code can have many characters&lt;/li&gt;
+  &lt;li&gt;Must return concatenation of both inputs to form a string&lt;/li&gt;
+  &lt;li&gt;Currency code can be 0 length&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So we have many expectations of what this method can return. Obviously the above code block doesn’t cater to all of these expectations; which is why…. writing code first sets false expectations. This is also why writing tests first ensures that we cater to all the business needs as well as acting as enforcers for proper implementation code to be written.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-driven-development&quot;&gt;Test Driven Development&lt;/h2&gt;
+
+&lt;p&gt;You’ve seen how wrong the above formatCurrency function could end up, simply by missing so many expectations. So how should we write our code? Red to Green.&lt;/p&gt;
+
+&lt;p&gt;Welcome to Test driven development (&lt;strong&gt;TDD&lt;/strong&gt;). TDD is a development paradigm whereby logic is built up in test cases initially. These test cases are run against missing implementations, in turn, they fail, the tests return red. Once all expectations are defined in tests for a particular unit of code then implementation begins. The unit test cases are continuously run (sometimes even automatically once save is pressed) against the implementation. It can then be defined that once all test cases pass then the implementation is complete.&lt;/p&gt;
+
+&lt;p&gt;The beauty of working in this environment is that you’re actually investing in security whilst also working off of a template for your implementation. This goes one step further, lets assume your team has exceptional test coverage as you’ve been doing TDD for quite sometime. If your implementation somehow introduces side effects into the code base, in that other units of code are affected by the output or changes your code introduces, the test cases of these implementations will also alert you that you’ve broken their contracts!&lt;/p&gt;
+
+&lt;h2 id=&quot;pushback-on-tdd-as-an-em&quot;&gt;Pushback on TDD as an EM&lt;/h2&gt;
+
+&lt;p&gt;Here are some items of challenge you may receive in your position as an engineering manager:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;TDD is too slow, I just want to code and ship this thing!&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;This is all well and good, but is this person investing their money in this product? Will they be here 10 years from now to help maintain the code they are writing? You want to ensure your code has longevity and don’t think that comes from just readability. Readability in itself is not longevity of code, architecture is not longevity of code; both of these items introduce efficiencies for future developers, but that isn’t longevity. longevity of code is code that doesn’t rot. It’s code that people aren’t afraid to touch, no matter how readable it seemingly may be. Readability can escalate to “this one line fix is simple”… to an over the weekend outage quite easily. Without tests, you have an uninsured investment. Make no mistake of this.&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;I’ll write the tests in the next sprint or as a fast follow&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;Well there’s a red flag already. The tests were not written side by side with the code in the first place. How are you so sure all the proper logic has been baked in and edge cases thought of without putting the logic and cases in isolation? Push back and demand excellence from your developers. Challenge them that no code should be introduced that does not have the proper insurance placed upon it. Sure their code may run, but who’s to say a merge conflict shortly after may in fact break their code?&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;I didn’t write tests in my last job, we got stuff out the door faster than Amazon prime!
+&lt;em&gt;This is an easy one. Ask how they think the developers feel that took their job at their last organization? How would they like to operate in a codebase with no security that what they’re touching isn’t going to introduce some unwanted, no, just any side effect. I would like to hear the justification of this. If there is no resolution start gathering data on how many defects come back from the stories without tests. This includes other developers breaking their code. This will tell you how valuable those tests would of been and make the case for investment.&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;This is just throwaway code anyway!
+&lt;em&gt;I mean, a hotfix or a patch happens. Some requirement wasn’t captured, a developer or QA member didn’t read the acceptance criteria properly and something got out into regression that was unexpected. I understand you want to fix fast and move forward. But if you don’t do it now, honestly, do you and your developers have the discipline to do it later? Hold off the release and be the gatekeeper your codebase desperately needs you to be. Don’t let it in unless you have a security guard protecting the interests of that logic. No tests, you’re not coming in. Ultimately, your job is to ensure results, lets make these results be a high defect count.&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;more-reading&quot;&gt;More Reading&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://amzn.to/2zEps8u&quot;&gt;Clean Code: A Handbook of Agile Software Craftsmanship &lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://amzn.to/2zEpxsO&quot;&gt;Essential Scrum: A Practical Guide to the Most Popular Agile Process&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://amzn.to/2zFaEXs&quot;&gt;Test-Driven iOS Development with Swift 3&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://amzn.to/2zFaEXs&quot;&gt;iOS Programming: The Big Nerd Ranch Guide&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+				
+				<pubDate>Tue, 07 Nov 2017 00:00:00 -0800</pubDate>
+				<link>http://manageering.us/2017/11/07/why-you-need-to-invest-in-tests/</link>
+				<guid isPermaLink="true">http://manageering.us/2017/11/07/why-you-need-to-invest-in-tests/</guid>
+			</item>
+		
+			<item>
 				<title>Value &amp; Reference Types</title>
 				
 					
